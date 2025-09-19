@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+    body {
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh;
+      background: url("WhatsApp Image 2025-09-16 at 13.20.46_aac16502.jpg") no-repeat center center/cover;
+      position: relative; overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(25px);
+      padding: 40px; border-radius: 24px;
+      width: 100%; max-width: 420px;
+      border: 1px solid rgba(255,77,77,0.3);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+      animation: fadeIn 1s ease-in-out;
+      z-index: 1;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .header-icon {
+      width: 75px; height: 75px;
+      background: linear-gradient(135deg, #ff4d4d, #cc0000);
+      border-radius: 50%; display: flex;
+      justify-content: center; align-items: center;
+      margin: 0 auto 20px auto;
+      color: #fff; font-size: 30px;
+      box-shadow: 0 0 20px rgba(255,77,77,0.5);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 15px rgba(255,77,77,0.5); }
+      50% { box-shadow: 0 0 30px rgba(255,77,77,0.8); }
+      100% { box-shadow: 0 0 15px rgba(255,77,77,0.5); }
+    }
+
+    h2 {
+      text-align: center; margin-bottom: 25px;
+      color: #fff; font-weight: 600; letter-spacing: 1px;
+    }
+
+    .input-box {
+      position: relative; margin-bottom: 26px;
+    }
+
+    .input-box input {
+      width: 100%; padding: 16px 14px 16px 45px;
+      border: 1.5px solid rgba(255,77,77,0.3);
+      border-radius: 12px; font-size: 15px;
+      background: rgba(255,255,255,0.08); color: #fff;
+      transition: all 0.3s ease-in-out;
+    }
+    .input-box input:focus {
+      border-color: #ff4d4d;
+      box-shadow: 0 0 15px rgba(255,77,77,0.8);
+    }
+
+    .input-box input::placeholder { color: transparent; }
+
+    .input-box label {
+      position: absolute; top: 50%; left: 45px;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.6);
+      pointer-events: none;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    .input-box input:focus + label,
+    .input-box input:not(:placeholder-shown) + label {
+      top: -8px; left: 15px;
+      font-size: 12px;
+      background: rgba(0,0,0,0.5);
+      padding: 0 6px;
+      border-radius: 4px;
+      color: #ff4d4d;
+    }
+
+    .input-box i {
+      position: absolute; left: 15px; top: 50%;
+      transform: translateY(-50%);
+      color: #ddd; font-size: 16px;
+    }
+
+    .btn {
+      position: relative;
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, #ff4d4d, #cc0000);
+      color: #fff; border: none; border-radius: 12px;
+      font-size: 16px; cursor: pointer; font-weight: 600;
+      overflow: hidden;
+      z-index: 1;
+      transition: transform 0.2s;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+    }
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      background: rgba(255,255,255,0.3);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      transition: width 0.6s, height 0.6s;
+      z-index: -1;
+    }
+    .btn:hover::after {
+      width: 300px; height: 300px;
+    }
+
+    .login-link { text-align: center; margin-top: 20px; font-size: 14px; color: #bbb; }
+    .login-link a { color: #ff4d4d; text-decoration: none; font-weight: 600; }
+    .login-link a:hover { text-decoration: underline; }
+
+    .error { color: #ff6b6b; font-size: 13px; margin-top: 5px; text-align: center; }
+
+    .footer-text {
+      margin-top: 25px; font-size: 12px; text-align: center; color: #bbb;
+    }
+    .footer-text a { color: #ff4d4d; text-decoration: none; }
+    .footer-text a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-icon">
+      <i class="fa fa-user-plus"></i>
+    </div>
+    <h2>Create Account</h2>
+    <form id="signupForm">
+      <div class="input-box">
+        <i class="fa fa-user"></i>
+        <input type="text" id="name" placeholder=" " required>
+        <label for="name">Full Name</label>
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-envelope"></i>
+        <input type="email" id="email" placeholder=" ">
+        <label for="email">Email (optional)</label>
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-phone"></i>
+        <input type="tel" id="mobile" placeholder=" " pattern="[0-9]{10}">
+        <label for="mobile">Mobile Number (optional)</label>
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="password" placeholder=" " required>
+        <label for="password">Password</label>
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="confirmPassword" placeholder=" " required>
+        <label for="confirmPassword">Confirm Password</label>
+        <p class="error" id="errorMsg"></p>
+      </div>
+
+      <button type="submit" class="btn">Sign Up</button>
+
+      <div class="login-link">
+        Already have an account? <a href="login.html">Login</a>
+      </div>
+    </form>
+    <p class="footer-text">By creating an account, you agree to our <a href="#">Terms</a> & <a href="#">Privacy Policy</a>.</p>
+  </div>
+
+  <script>
+  const form = document.getElementById('signupForm');
+  const email = document.getElementById('email');
+  const mobile = document.getElementById('mobile');
+  const password = document.getElementById('password');
+  const confirmPassword = document.getElementById('confirmPassword');
+  const errorMsg = document.getElementById('errorMsg');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    errorMsg.textContent = "";
+
+    if (email.value.trim() === "" && mobile.value.trim() === "") {
+      errorMsg.textContent = "Please enter either Email or Mobile Number.";
+      return;
+    }
+    if (mobile.value.trim() !== "" && !/^[0-9]{10}$/.test(mobile.value)) {
+      errorMsg.textContent = "Enter a valid 10-digit mobile number!";
+      return;
+    }
+    if (password.value !== confirmPassword.value) {
+      errorMsg.textContent = "Passwords do not match!";
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5500/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: document.getElementById("name").value,
+          email: email.value.trim() || null,
+          mobile: mobile.value.trim() || null,
+          password: password.value
+        })
+      });
+
+      const data = await response.json();
+      alert(data.message);
+
+      if (data.message === "Signup successful!") {
+        window.location.href = "login.html"; // redirect after success
+      }
+    } catch (err) {
+      alert("Error connecting to server!");
+    }
+  });
+</script>
+
+</body>
+</html>

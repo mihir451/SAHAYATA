@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Full Screen UI</title>
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">N</div>
+
+      <!-- Sidebar input -->
+      <div class="sidebar-input">
+        <input type="text" placeholder="Search..." />
+      </div>
+
+      <div class="side-btn" title="menu">≡</div>
+      <div class="side-btn" title="layers">▦</div>
+      <div style="flex:1"></div>
+      <div class="side-btn" title="settings">⚙</div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+      <!-- Red Alert Banner -->
+<div class="alert-banner">
+  ⚠️ Disaster Alert: Flood Risk in Your Area!
+</div>
+
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="search">
+          <div class="location">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C8.686 2 6 4.686 6 8c0 5 6 12 6 12s6-7 6-12c0-3.314-2.686-6-6-6z" stroke="#234" stroke-width="1.2" fill="#fff"/>
+            </svg>
+            <input class="loc-input" placeholder="Enter location" />
+          </div>
+          <div class="side-btn">▼</div>
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:12px">
+          <div class="muted">Map • Live</div>
+          <div class="side-btn">👤</div>
+        </div>
+      </div>
+
+      <!-- Section Title -->
+      <section style="padding:16px 6px">
+        <div class="title">Nearby Places</div>
+        <div class="muted">Tap any tile to open details</div>
+      </section>
+
+      <!-- Cards -->
+      <section class="grid">
+        <div class="card">🌤 Weather Report</div>
+        <div class="card">🛡 Safe Zone 1</div>
+        <div class="card">🚑 Rescue Team</div>
+        <div class="card">🏕 Relief Camp</div>
+        <div class="card">💧 Water Point</div>
+        <div class="card">🏥 Medical Camp</div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll('.card').forEach(c => {
+      c.addEventListener('click', () => {
+        c.animate([
+          {transform: 'scale(1)'},
+          {transform: 'scale(.96)'},
+          {transform: 'scale(1)'}
+        ], {duration: 200});
+        alert('Opening\n' + c.textContent.trim());
+      });
+    });
+  </script>
+</body>
+</html>

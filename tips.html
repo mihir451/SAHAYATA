@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disaster Preparedness Tips</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url(what-is-disaster-management.jpg);
+      background-size: cover;
+      color: #fff;
+    }
+
+    /* Overlay effect */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: -1;
+    }
+
+    /* Emergency Alert Banner */
+    .alert-banner {
+      background: #ff0000;
+      color: #fff;
+      text-align: center;
+      padding: 12px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      animation: blinkBanner 1s infinite;
+      letter-spacing: 1px;
+    }
+    @keyframes blinkBanner {
+      0% { background: #ff0000; }
+      50% { background: #b30000; }
+      100% { background: #ff0000; }
+    }
+
+    /* Transparent & Blurred Header */
+    header {
+      background: rgba(1, 19, 11, 0.25); /* transparent red */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #fff;
+      text-align: center;
+      padding: 30px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+      border-radius: 0 0 15px 15px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+    }
+    header p {
+      margin-top: 10px;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: auto;
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: rgba(255, 0, 0, 0.15); /* red tint */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 8px 24px rgba(255,0,0,0.4);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255,0,0,0.4);
+    }
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(255,0,0,0.6);
+      border-color: #ff4444;
+    }
+    .card h2 {
+      color: #ff6b6b;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+    }
+    ul {
+      padding-left: 20px;
+      margin: 0;
+      color: #f8f9fa;
+    }
+    ul li {
+      margin: 12px 0;
+      line-height: 1.6;
+      list-style: none;
+      position: relative;
+      font-size: 1rem;
+    }
+    ul li::before {
+      content: "✔";
+      position: absolute;
+      left: -22px;
+      color: #ff4444;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: rgba(13, 27, 42, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #fff;
+      margin-top: 40px;
+      border-top: 2px solid rgba(255,255,255,0.2);
+      box-shadow: 0 -3px 12px rgba(0,0,0,0.4);
+    }
+    footer p {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Smooth Animations */
+    * {
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Emergency Alert Banner -->
+  <div class="alert-banner">
+    ⚠ EMERGENCY ALERT: Stay Calm, Stay Safe ⚠
+  </div>
+
+  <header>
+    <h1><i class="fa-solid fa-shield-halved"></i> Disaster Preparedness Tips</h1>
+    <p>Stay Prepared, Stay Safe 🌍</p>
+  </header>
+
+  <div class="container">
+    <!-- General Preparedness -->
+    <div class="card">
+      <h2><i class="fa-solid fa-box"></i> Before a Disaster</h2>
+      <ul>
+        <li>Make an Emergency Kit (water, food, medicines, flashlight, documents).</li>
+        <li>Create a Family Plan with safe exits and meeting points.</li>
+        <li>Stay Informed with weather updates and government alerts.</li>
+        <li>Secure your home (wiring, gas, fire extinguisher).</li>
+        <li>Learn basic First Aid skills.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><i class="fa-solid fa-bullhorn"></i> During a Disaster</h2>
+      <ul>
+        <li>Stay Calm and avoid panic.</li>
+        <li>Follow Official Instructions, not rumors.</li>
+        <li>Move to Safe Areas (higher ground, open space, shelters).</li>
+        <li>Help children, elderly, and differently-abled persons.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><i class="fa-solid fa-hammer"></i> After a Disaster</h2>
+      <ul>
+        <li>Check for injuries and give First Aid.</li>
+        <li>Avoid Hazards like live wires and gas leaks.</li>
+        <li>Boil or filter water before drinking.</li>
+        <li>Report damages or missing persons to authorities.</li>
+      </ul>
+    </div>
+
+    <!-- Specific Disasters -->
+    <div class="card">
+      <h2><i class="fa-solid fa-water"></i> Flood Safety</h2>
+      <ul>
+        <li>Move to higher ground immediately.</li>
+        <li>Avoid walking or driving through floodwaters.</li>
+        <li>Disconnect electrical appliances to prevent shock.</li>
+        <li>Store clean drinking water in advance.</li>
+        <li>After floods, avoid contaminated water sources.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><i class="fa-solid fa-house-crack"></i> Earthquake Safety</h2>
+      <ul>
+        <li>Drop, Cover, and Hold under sturdy furniture.</li>
+        <li>Stay away from windows, mirrors, and heavy objects.</li>
+        <li>If outside, move to an open area away from buildings.</li>
+        <li>Do not use elevators during or after the quake.</li>
+        <li>Check for injuries and structural damages afterward.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><i class="fa-solid fa-wind"></i> Cyclone Safety</h2>
+      <ul>
+        <li>Secure windows, doors, and loose objects outside.</li>
+        <li>Keep a battery-powered radio for updates.</li>
+        <li>Evacuate if advised by authorities.</li>
+        <li>Avoid coastal areas until authorities declare safety.</li>
+        <li>Stay indoors and away from glass windows during the storm.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><i class="fa-solid fa-fire-extinguisher"></i> Fire Safety</h2>
+      <ul>
+        <li>Install smoke alarms and fire extinguishers at home.</li>
+        <li>Never use elevators during a fire; use stairs.</li>
+        <li>Stop, Drop, and Roll if clothes catch fire.</li>
+        <li>Crawl low under smoke to exit safely.</li>
+        <li>Call emergency services immediately after escaping.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Disaster Safety Awareness | Made with ❤</p>
+  </footer>
+
+</body>
+</html>

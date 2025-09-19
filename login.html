@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sahayata | Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  background: #111;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: url('login page background.jpg') center/cover no-repeat;
+  filter: blur(14px) brightness(0.6);
+  z-index: -2;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.5;
+}
+.orb.one { width: 300px; height: 300px; background: #ef4444; top: -50px; left: -50px; }
+.orb.two { width: 400px; height: 400px; background: #dc2626; bottom: -100px; right: -80px; }
+.orb.three { width: 250px; height: 250px; background: #f87171; top: 40%; left: 70%; }
+
+.login-box {
+  position: relative;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(15px);
+  padding: 2rem;
+  border-radius: 22px;
+  box-shadow: 0 12px 40px rgba(220,38,38,0.4);
+  width: 100%;
+  max-width: 380px;
+  z-index: 2;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+}
+
+.brand h1 {
+  font-size: 2rem;
+  text-align: center;
+  color: #ffeded;
+  margin-bottom: 1rem;
+}
+
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #fff;
+  font-weight: 400;
+}
+
+.form-group { margin-bottom: 1rem; display: flex; flex-direction: column; }
+label { margin-bottom: 0.5rem; font-size: 0.9rem; color: #eee; }
+input[type="email"], input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 12px;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.25);
+  color: #111;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+input:focus { outline: none; border-color: #dc2626; box-shadow: 0 0 12px rgba(220,38,38,0.7); }
+
+button.login-btn {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#dc2626,#ff4b2b);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+button.login-btn:hover {
+  background: linear-gradient(135deg,#b91c1c,#ff2c00);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(220,38,38,0.7);
+}
+
+.signup { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: #eee; }
+.signup a { color: #ffcaca; font-weight: 500; text-decoration: none; }
+.signup a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+
+  <div class="login-box">
+    <div class="brand">
+      <h1>SAHAYATA</h1>
+    </div>
+    <h2>LOGIN</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+      <p class="signup">
+        New to SAHAYATA? <a href="signup.html">Create an account</a>
+      </p>
+    </form>
+  </div>
+
+  <!-- ✅ Backend Connect Script -->
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const response = await fetch("http://localhost:5500/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+        alert(data.message);
+
+        if (data.message === "Login successful") {
+          window.location.href = "dashboard.html";
+        }
+      } catch (err) {
+        alert("Error connecting to server!");
+      }
+    });
+  </script>
+</body>
+</html>

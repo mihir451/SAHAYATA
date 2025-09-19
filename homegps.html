@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Disaster Alert + GPS Tracker</title>
+  <link rel="stylesheet" href="home.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Main flex layout */
+    .app {
+      display: flex;
+      height: 100vh;
+      background: url("https://share.google/images/Pyw39iKxuajZ9HMtY") no-repeat center/cover;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 60px;
+      display: flex;
+      flex-direction: column;
+      background: rgba(43, 47, 64, 0.95);
+      color: white;
+      padding: 10px;
+    }
+    .sidebar-input input {
+      width: 100%;
+      padding: 4px;
+      border-radius: 6px;
+      border: none;
+    }
+    .side-btn {
+      cursor: pointer;
+      padding: 10px;
+      margin: 5px 0;
+      text-align: center;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    .side-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Grid for cards (vertical list + scroll) */
+    .grid {
+      display: flex;
+      flex-direction: column;   /* vertical layout */
+      gap: 12px;
+      padding-right: 16px;
+      height: 100%;             /* full height */
+      overflow-y: auto;         /* scroll if overflow */
+    }
+    .grid::-webkit-scrollbar {
+      width: 8px;
+    }
+    .grid::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.2);
+      border-radius: 6px;
+    }
+    .grid::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.4);
+    }
+
+   .grid a {
+  text-decoration: none;
+  display: block;     /* लिंक पूरा card cover करेगा */
+  width: 100%;        /* full width clickable */
+}
+.grid .card {
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 16px;
+  color: white;
+  text-align: left;
+  width: 100%;        /* container की पूरी चौड़ाई */
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+
+    /* Main content + tracker wrapper */
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    /* Main content */
+    .main {
+      flex: 2;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    /* Right-side tracker */
+    .tracker-container {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tracker-button {
+      border: none;
+      padding: 10px 16px;
+      margin: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      color: white;
+    }
+    #one-time-button { background-color: #3b82f6; }
+    #one-time-button:hover { background-color: #2563eb; }
+    #live-tracking-button { background-color: #4CAF50; }
+    #live-tracking-button.stop { background-color: #f44336; }
+
+    #location-data {
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+    #map-container {
+      margin-top: 12px;
+      height: 200px;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    #location-map {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">N</div>
+      <div class="sidebar-input">
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="side-btn" title="menu">≡</div>
+      <div class="side-btn" title="layers">▦</div>
+      <div style="flex:1"></div>
+      <div class="side-btn" title="settings">⚙</div>
+    </aside>
+
+    <!-- Main + GPS tracker -->
+    <div class="main-wrapper">
+
+      <!-- Main content -->
+      <main class="main">
+        <div class="alert-banner">⚠️ Disaster Alert: Flood Risk in Your Area!</div>
+        <section style="padding:16px 6px">
+          <div class="title">Nearby Places</div>
+          <div class="muted">Tap any tile to open details</div>
+        </section>
+        <section class="grid">
+          <div class="card">🌤 Weather Report</div>
+          <a href="loc.html"><div class="card">🛡 Risk Areas</div></a>
+          <a href="emergency .html"><div class="card">🚑 Rescue Team</div></a>
+          <a href="tips.html"><div class="card">💧 Tips Point</div></a>
+          <a href="hospital feAach.html"><div class="card">🏥 Medical Camp</div></a>
+        </section>
+      </main>
+
+      <!-- Right-side GPS Tracker -->
+      <div class="tracker-container">
+        <h2><i class="fas fa-crosshairs"></i> GPS Tracker</h2>
+        <p id="status">Get your current location or start live tracking.</p>
+        <div>
+          <button id="one-time-button" class="tracker-button" onclick="getSingleLocation()">
+            <i class="fas fa-map-marker-alt"></i> Get Location
+          </button>
+          <button id="live-tracking-button" class="tracker-button" onclick="toggleLiveTracking()">
+            <i class="fas fa-satellite-dish"></i> Start Live Tracking
+          </button>
+        </div>
+        <div id="location-data"></div>
+        <div id="map-container">
+          <iframe id="location-map" src="" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let watchId = null;
+
+    function updateLocationUI(lat, lon) {
+      document.getElementById("location-data").innerHTML = `
+        📍 Latitude: <strong>${lat.toFixed(6)}</strong><br>
+        📍 Longitude: <strong>${lon.toFixed(6)}</strong>
+      `;
+      document.getElementById("location-map").src = 
+        `https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.01}%2C${lat-0.01}%2C${lon+0.01}%2C${lat+0.01}&layer=mapnik&marker=${lat}%2C${lon}`;
+    }
+
+    function getSingleLocation() {
+      const status = document.getElementById("status");
+      if (!navigator.geolocation) return status.textContent = "❌ Geolocation not supported.";
+      status.textContent = "📡 Fetching current location...";
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          updateLocationUI(pos.coords.latitude, pos.coords.longitude);
+          status.textContent = "✅ Location fetched successfully.";
+        },
+        (err) => { status.textContent = "⚠ Error: " + err.message; },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
+    }
+
+    function toggleLiveTracking() {
+      const btn = document.getElementById("live-tracking-button");
+      const status = document.getElementById("status");
+
+      if (!navigator.geolocation) return status.textContent = "❌ Geolocation not supported.";
+
+      if (watchId === null) {
+        status.textContent = "📡 Live tracking started...";
+        btn.innerHTML = '<i class="fas fa-stop-circle"></i> Stop Tracking';
+        btn.classList.add("stop");
+        watchId = navigator.geolocation.watchPosition(
+          pos => updateLocationUI(pos.coords.latitude, pos.coords.longitude),
+          err => { status.textContent = "⚠ Error: " + err.message; stopTracking(); },
+          { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        );
+      } else stopTracking();
+    }
+
+    function stopTracking() {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+        const btn = document.getElementById("live-tracking-button");
+        btn.innerHTML = '<i class="fas fa-satellite-dish"></i> Start Live Tracking';
+        btn.classList.remove("stop");
+        document.getElementById("status").textContent = "🛑 Live tracking stopped.";
+      }
+    }
+
+    // Card click animation
+    document.querySelectorAll('.card').forEach(c => {
+      c.addEventListener('click', () => {
+        c.animate(
+          [{transform: 'scale(1)'},{transform: 'scale(.96)'},{transform: 'scale(1)'}],
+          {duration: 200}
+        );
+      });
+    });
+  </script>
+</body>
+</html>

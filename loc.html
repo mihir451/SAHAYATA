@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚠️ Danger Zone Tracker - Jabalpur</title>
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #10131a;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      position: relative;
+      background: linear-gradient(90deg, #ff0000, #8b0000);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    header h1 { font-size: 2rem; animation: pulse 1.5s infinite; }
+    @keyframes pulse {
+      0% { color: #fff; }
+      50% { color: #ffcccb; }
+      100% { color: #fff; }
+    }
+
+    /* Emergency Button (not clickable) */
+    .emergency-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: #ff0000;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 1rem;
+      box-shadow: 0 0 10px rgba(255,0,0,0.8);
+      animation: blink 1s infinite;
+      pointer-events: none; /* makes button unclickable */
+    }
+    @keyframes blink {
+      0%, 100% { background: #ff0000; box-shadow: 0 0 10px rgba(255,0,0,0.8); }
+      50% { background: #8b0000; box-shadow: 0 0 15px rgba(255,80,80,1); }
+    }
+
+    main { flex: 1; display: flex; }
+    #map { flex: 3; height: calc(100vh - 140px); border-right: 2px solid #ff3333; }
+    aside {
+      flex: 1; background: rgba(255, 255, 255, 0.05);
+      padding: 20px; overflow-y: auto;
+    }
+    aside h2 {
+      margin-bottom: 15px; color: #ff3333;
+      border-bottom: 2px solid #ff3333; padding-bottom: 5px;
+    }
+    .danger-box {
+      background: rgba(255, 0, 0, 0.15);
+      margin: 12px 0;
+      padding: 15px;
+      border: 2px solid #ff3333;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      transition: transform 0.2s, background 0.3s;
+      cursor: pointer;
+    }
+    .danger-box:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 0, 0, 0.25);
+    }
+    .danger-box h3 {
+      margin-bottom: 6px;
+      font-size: 1.2rem;
+      color: #ff6666;
+    }
+    .danger-box p {
+      font-size: 0.95rem;
+      color: #ddd;
+    }
+    footer {
+      background: #111; text-align: center;
+      padding: 10px; font-size: 0.9rem; color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>⚠️ Danger Zone Tracker - Jabalpur</h1>
+    <p>Real-time alerts for hazardous areas</p>
+    <button class="emergency-btn">🚨 Emergency</button>
+  </header>
+
+  <main>
+    <div id="map"></div>
+    <aside>
+      <h2>Active Alerts</h2>
+      <div id="danger-list">
+        <p>Loading danger zones...</p>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <p>© 2025 DangerWatch | Stay Safe</p>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    // Jabalpur danger zones with coordinates
+    const dangerZones = [
+      { location: "Bharaghar", type: "Flood Risk", coords: [23.1745, 79.9865] },
+      { location: "Tilwara Road", type: "Accident Zone", coords: [23.1415, 79.9313] },
+      { location: "Bhadbada", type: "Landslide Risk", coords: [23.1622, 79.9448] },
+      { location: "Jalpari Water Park", type: "Overcrowding Hazard", coords: [23.1637, 79.9782] },
+      { location: "Dhuandhar Waterfall", type: "Strong Water Currents", coords: [23.1587, 79.8051] },
+      { location: "Marble Rock", type: "Steep Cliffs Hazard", coords: [23.1333, 79.8667] },
+      { location: "Bharaghat", type: "Flood-Prone Zone", coords: [23.1760, 79.9750] },
+      { location: "Bargi Dam", type: "Water Release Risk", coords: [22.9845, 79.8830] }
+    ];
+
+    // Initialize map centered on Jabalpur
+    const map = L.map('map').setView([23.1815, 79.9864], 11);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // Custom warning icon
+    const dangerIcon = L.icon({
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/463/463612.png',
+      iconSize: [32, 32]
+    });
+
+    // Store markers for reference
+    const markers = {};
+
+    // Add markers
+    dangerZones.forEach(zone => {
+      const marker = L.marker(zone.coords, { icon: dangerIcon })
+        .addTo(map)
+        .bindPopup(`<b>${zone.location}</b><br>${zone.type}`);
+      markers[zone.location] = marker;
+    });
+
+    // Populate alert boxes and add click events
+    const dangerList = document.getElementById("danger-list");
+    dangerList.innerHTML = "";
+    dangerZones.forEach(zone => {
+      const div = document.createElement("div");
+      div.classList.add("danger-box");
+      div.innerHTML = `<h3>${zone.location}</h3><p>${zone.type}</p>`;
+      
+      // Zoom to marker when box is clicked
+      div.addEventListener("click", () => {
+        map.setView(zone.coords, 15, { animate: true });
+        markers[zone.location].openPopup();
+      });
+      
+      dangerList.appendChild(div);
+    });
+  </script>
+</body>
+</html>
