@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madhya Pradesh Weather - NASA Emergency</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top, #0b0c10, #1f2833, #0b0c10);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    gap: 1.5rem;
+    overflow-x: hidden;
+    background-size: cover;
+    position: relative;
+    background-image: url(_130077875_summer_storm.jpg);
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    margin-bottom: 0.5rem;
+  }
+  header p { color: #7fdbff; font-size: 1rem; }
+
+  #search-bar {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 500px;
+  }
+  #search-bar input {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #00ffff;
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: 0 0 10px #00ffff;
+    transition: 0.3s;
+  }
+  #search-bar input:focus { box-shadow: 0 0 20px #00ffff; border-color: #00ffff; }
+  #search-bar button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: #00ffff;
+    color: #0b0c10;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    transition: 0.3s;
+  }
+  #search-bar button:hover { box-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff; }
+
+  #recent-searches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    max-width: 500px;
+  }
+  #recent-searches button {
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.3rem;
+    border: none;
+    background-color: #0b0c10;
+    color: #00ffff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    box-shadow: 0 0 5px #00ffff;
+    transition: 0.3s;
+  }
+  #recent-searches button:hover { box-shadow: 0 0 15px #00ffff; transform: scale(1.05); }
+
+  #weather-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; }
+
+  .weather-card {
+    background: rgba(15,17,36,0.9);
+    border: 1px solid #00ffff;
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    width: 220px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff inset;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .weather-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff inset;
+  }
+  h1.card-title { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; color: #00ffff; text-shadow: 0 0 5px #00ffff; margin-bottom: 1rem; }
+  .city { font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: bold; color: #7fffd4; }
+  .temp { font-size: 2rem; font-weight: bold; margin-bottom: 0.5rem; color: #00ffff; text-shadow: 0 0 5px #00ffff; }
+  .description { font-size: 0.9rem; margin-bottom: 0.5rem; text-transform: capitalize; color: #7fffd4; }
+
+  .weather-icon {
+    width: 60px;
+    margin-top: 0.5rem;
+    filter: drop-shadow(0 0 10px #00ffff);
+    position: relative;
+    z-index: 2;
+    animation: rotate 10s linear infinite;
+  }
+  @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+  .cloud {
+    position: absolute;
+    top: 10%;
+    left: -80px;
+    width: 80px;
+    height: 50px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    animation: cloudMove 10s linear infinite;
+    z-index: 1;
+  }
+  .cloud::after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    top: -15px;
+    left: 15px;
+  }
+  @keyframes cloudMove { 0% { left: -80px; } 100% { left: 220px; } }
+
+  .rain-drop {
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background: #00ffff;
+    top: 0;
+    animation: rainFall 1s linear infinite;
+  }
+  @keyframes rainFall { 0% { transform: translateY(0); opacity:1; } 100% { transform: translateY(100px); opacity:0; } }
+
+  body::before {
+    content: '';
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: radial-gradient(white 1px, transparent 1px);
+    background-size: 3px 3px;
+    animation: starMove 60s linear infinite;
+    z-index: -1;
+  }
+  @keyframes starMove { 0% { transform: translate(0,0); } 100% { transform: translate(-500px, -500px); } }
+
+  /* Emergency background overlay */
+  .emergency-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,0,0,0.3);
+    pointer-events: none;
+    z-index: 0;
+    animation: pulseRed 1s infinite alternate;
+  }
+  @keyframes pulseRed {
+    0% { background: rgba(255,0,0,0.2); }
+    100% { background: rgba(255,0,0,0.5); }
+  }
+
+  /* Emergency alert banner */
+  .alert-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem 0;
+    background: red;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    z-index: 100;
+    animation: flashRed 0.5s infinite alternate;
+  }
+  @keyframes flashRed { 0% { opacity: 1; } 100% { opacity: 0.5; } }
+
+  @media (max-width: 600px) { .weather-card { width: 90%; } }
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Madhya Pradesh Weather</h1>
+  <p>Futuristic Space-Themed Weather Dashboard</p>
+</header>
+
+<div id="search-bar">
+  <input type="text" id="city-input" placeholder="Enter city name...">
+  <button id="search-btn">Search</button>
+</div>
+
+<div id="recent-searches"></div>
+<div id="weather-container"></div>
+
+<audio id="siren" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+
+<script>
+const apiKey = "c4c19a9a962ba35c556f406133e7f57e";
+const container = document.getElementById("weather-container");
+const recentDiv = document.getElementById("recent-searches");
+const siren = document.getElementById("siren");
+let recentCities = [];
+let cities = ["Bhopal","Indore","Jabalpur","Gwalior","Ujjain","Sagar","Rewa","Satna","Ratlam","Dewas"];
+
+function getWeatherIcon(temp, description) {
+  description = description.toLowerCase();
+  if(description.includes("rain")) return "🌧️";
+  if(description.includes("snow")) return "❄️";
+  if(description.includes("cloud")) return "☁️";
+  if(temp >= 30) return "☀️";
+  if(temp <= 15) return "🌙";
+  return "🌗";
+}
+
+// Emergency overlay + banner + siren
+function checkEmergency(description) {
+  const emergencies = ["storm", "thunder", "tornado", "hurricane", "extreme", "heat"];
+  // Remove old overlays/banners
+  document.querySelectorAll(".emergency-bg, .alert-banner").forEach(el => el.remove());
+  siren.pause();
+  siren.currentTime = 0;
+
+  if(emergencies.some(word => description.toLowerCase().includes(word))) {
+    const overlay = document.createElement("div");
+    overlay.className = "emergency-bg";
+    document.body.appendChild(overlay);
+
+    const banner = document.createElement("div");
+    banner.className = "alert-banner";
+    banner.textContent = "EMERGENCY WEATHER ALERT!";
+    document.body.appendChild(banner);
+
+    siren.play();
+  }
+}
+
+async function fetchWeather(city) {
+  const card = document.createElement("div");
+  card.className = "weather-card";
+  card.innerHTML = `<h1 class="card-title">Weather</h1><div class="city">${city}</div><div class="temp">Loading...</div>`;
+  container.appendChild(card);
+
+  try {
+    const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`);
+    const data = await res.json();
+    if(data.cod !== 200) throw new Error(data.message);
+
+    const temp = Math.round(data.main.temp);
+    const description = data.weather[0].description;
+    const icon = getWeatherIcon(temp, description);
+
+    card.innerHTML = `
+      <h1 class="card-title">Weather</h1>
+      <div class="city">${data.name}, ${data.sys.country}</div>
+      <div class="temp">${temp}°C <span class="weather-icon">${icon}</span></div>
+      <div class="description">${description}</div>
+    `;
+
+    checkEmergency(description);
+
+    if(description.includes("cloud")) {
+      const cloud = document.createElement("div");
+      cloud.className = "cloud";
+      card.appendChild(cloud);
+    }
+
+    if(description.includes("rain")){
+      for(let i=0;i<20;i++){
+        const drop = document.createElement("div");
+        drop.className = "rain-drop";
+        drop.style.left = Math.random() * 200 + "px";
+        drop.style.animationDelay = Math.random() + "s";
+        card.appendChild(drop);
+      }
+    }
+
+    if(description.includes("snow")){
+      for(let i=0;i<20;i++){
+        const snow = document.createElement("div");
+        snow.className = "rain-drop";
+        snow.style.left = Math.random() * 200 + "px";
+        snow.style.height = "8px";
+        snow.style.width = "8px";
+        snow.style.background = "#7fffd4";
+        snow.style.borderRadius = "50%";
+        snow.style.animationDuration = 2 + Math.random() * 2 + "s";
+        snow.style.animationDelay = Math.random() + "s";
+        card.appendChild(snow);
+      }
+    }
+
+    if(!recentCities.includes(data.name)){
+      recentCities.unshift(data.name);
+      if(recentCities.length>5) recentCities.pop();
+      updateRecentSearches();
+    }
+
+  } catch(err){
+    card.innerHTML = `<h1 class="card-title">Weather</h1><div class="city">${city}</div><div class="description" style="color:red;">${err.message}</div>`;
+  }
+}
+
+function updateRecentSearches(){
+  recentDiv.innerHTML = "";
+  recentCities.forEach(city=>{
+    const btn=document.createElement("button");
+    btn.textContent = city;
+    btn.addEventListener("click",()=>fetchWeather(city));
+    recentDiv.appendChild(btn);
+  });
+}
+
+function loadAllCities(){
+  container.innerHTML = "";
+  cities.forEach(fetchWeather);
+}
+
+loadAllCities();
+
+const searchBtn = document.getElementById("search-btn");
+searchBtn.addEventListener("click", ()=>{
+  const input = document.getElementById("city-input").value.trim();
+  if(input){ fetchWeather(input); document.getElementById("city-input").value=""; }
+});
+
+document.getElementById("city-input").addEventListener("keydown", e=>{
+  if(e.key==="Enter") searchBtn.click();
+});
+</script>
+</body>
+</html>
