@@ -65,7 +65,7 @@ app.post("/signup", async (req, res) => {
 
     await newUser.save();
 
-    res.status(201).json({ message: "Signup successful!" });
+    res.status(201).json({ message: "✅ Signup successful!" });
   } catch (err) {
     console.error("❌ Error in signup:", err);
     res.status(500).json({ message: "Server error" });
@@ -75,21 +75,28 @@ app.post("/signup", async (req, res) => {
 // ================= LOGIN =================
 app.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, mobile, password } = req.body;
 
-    // Check if email exists
-    const user = await User.findOne({ email });
+    if ((!email && !mobile) || !password) {
+      return res.status(400).json({ message: "Email/Mobile and password are required." });
+    }
+
+    // Find user either by email or mobile
+    const user = email
+      ? await User.findOne({ email })
+      : await User.findOne({ mobile });
+
     if (!user) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "Invalid email/mobile or password" });
     }
 
     // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "Invalid email/mobile or password" });
     }
 
-    res.json({ message: "Login successful" });
+    res.json({ message: "✅ Login successful" });
   } catch (err) {
     console.error("❌ Error in login:", err);
     res.status(500).json({ message: "Server error" });
@@ -98,5 +105,5 @@ app.post("/login", async (req, res) => {
 
 // ================= START SERVER =================
 app.listen(PORT, () => {
-  console.log(🚀 Server running on http://localhost:5500);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
